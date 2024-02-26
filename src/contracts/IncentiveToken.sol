@@ -4,10 +4,10 @@ pragma solidity >=0.4.22 <0.9.0;
 contract IncentiveToken {
     string public name = "DUMMY Token";
     string public symbol = "INC";
-    uint public totalSupply = 100000000000000000;
-    uint public decimal = 18;
+    uint256 public totalSupply = 100000000000000000;
+    uint256 public decimal = 18;
 
-    event Transfer(address _from, address _to, uint _value);
+    event Transfer(address _from, address _to, uint256 _value);
     event Approve(address _owner, address _spender, uint256 _value);
 
     mapping(address => uint256) public balances;
@@ -18,14 +18,14 @@ contract IncentiveToken {
     }
 
 
-    function transfer(address _to, uint _value) public TransferGuard(_value) returns(bool success)  {
+    function transfer(address _to, uint256 _value) public TransferGuard(_value) returns(bool success)  {
         balances[msg.sender] -= _value;
         balances[_to] += _value;
         emit Transfer(msg.sender, _to, _value);
         return true;
     }
 
-    modifier TransferGuard (uint _value){
+    modifier TransferGuard (uint256 _value){
         require(balances[msg.sender] >= _value, "Insufficient balance.");
         _;
     }

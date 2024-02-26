@@ -14,8 +14,9 @@ contract StakingDapp{
     mapping(address => bool) public has_staked;
     mapping(address => bool) public is_staking;
 
-    event UnstakeTokens(_amount);
-    event Staketokens(_amount);
+    event UnstakeTokens(uint256 _amount);
+    event Staketokens(address _staker, uint256 _amount);
+    event UnstakeTokens(address _staker, uint256 _amount);
 
     constructor(IncentiveToken reward_token, Tether fake_usd) {
         $inc = reward_token;
@@ -23,7 +24,7 @@ contract StakingDapp{
         owner = msg.sender;
     }
 
-    function stakeTokens(uint _amount) public {
+    function stakeTokens(uint256 _amount) public {
         require(_amount > 0, "No tokens provided.");
         $usdf.transferFrom(msg.sender, address(this), _amount);
 
@@ -37,9 +38,9 @@ contract StakingDapp{
         has_staked[msg.sender] = true;
     }
 
-    function unstakeTokens(uint _amount) public {
+    function unstakeTokens(uint256 _amount) public {
         require(is_staking[msg.sender], "Staking balance is zero.");
-        uint balance = staking_balance[msg.sender];
+        uint256 balance = staking_balance[msg.sender];
         $usdf.transfer(msg.sender, balance);
         if(balance < _amount){
             balance = 0;
@@ -51,11 +52,10 @@ contract StakingDapp{
     function SendRewards() public {
         require(msg.sender == owner, "Caller must be the owner of this function.");
 
-        for(uint i = 0; i < stakers.length; i++) {
-            address recipient = stakers[i];
-            if(is_staking[recipient]){
-                uint balance = [staking_balance[recipient]];
-                $inc.transfer(recipient, balance);
+        for(uint256 i = 0; i < stakers.length; i++) {
+            if(is_staking[stakers[i]]){
+                uint256 balance = staking_balance[stakers[i]];
+                $inc.transfer(stakers[i], balance);
             }
         }
     }

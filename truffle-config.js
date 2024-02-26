@@ -57,8 +57,11 @@ module.exports = {
    * $ truffle test --network <network-name>
    */
 
+  solidityLog: {
+    preventConsoleLogMigration: true // default is false,
+  },
   contracts_directory: "./src/contracts",
-  contracts_build_directory: "./src/build",
+  artifacts: "./src/build",
   networks: {
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
@@ -109,14 +112,14 @@ module.exports = {
   compilers: {
     solc: {
       version: "0.8.21",      // Fetch exact version from solc-bin (default: truffle's version)
-      // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
-      // settings: {          // See the solidity docs for advice about optimization and evmVersion
-      //  optimizer: {
-      //    enabled: false,
-      //    runs: 200
-      //  },
-      //  evmVersion: "byzantium"
-      // }
+      docker: false,        // Use "0.5.1" you've installed locally with docker (default: false)
+      settings: {          // See the solidity docs for advice about optimization and evmVersion
+       optimizer: {
+         enabled: true,
+         runs: 200
+       },
+       evmVersion: "byzantium"
+      }
     }
   },
 

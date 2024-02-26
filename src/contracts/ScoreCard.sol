@@ -5,8 +5,8 @@ contract ScoreCard {
 
     uint256 studentCount = 0;
     address classTeacher;
-    mapping (uint => StudentDetails) students;
-    mapping (uint => Scores) scores;
+    mapping (uint256 => StudentDetails) students;
+    mapping (uint256 => Scores) scores;
     constructor() {
         classTeacher = msg.sender;
     }
@@ -57,7 +57,7 @@ contract ScoreCard {
     event studentScoresRecorded(uint256 _id, uint256 _english, uint256 _maths, uint256 _science);
 
     /** 
-        modifier invalidScores(uint _studentId) {
+        modifier invalidScores(uint256 _studentId) {
             //require(scores[_studentId].englishMarks, "");
             //require(true, "Invalid score sheet submitted.");
             _;
